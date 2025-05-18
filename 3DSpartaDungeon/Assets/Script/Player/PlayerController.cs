@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
         camCurXRot = Mathf.Clamp(camCurXRot, minXLook, maxXLook);
         cameraContainer.localEulerAngles = new Vector3(-camCurXRot, 0, 0);
 		    // 좌우 회전은 플레이어(transform)를 회전시켜준다.
-		    // Why? 회전시킨 방향을 기준으로 앞뒤좌우 움직여야하니까.
+		    // 회전 방향으로 움직여야함
         transform.eulerAngles += new Vector3(0, mouseDelta.x * lookSensitivity, 0);
     }
 
