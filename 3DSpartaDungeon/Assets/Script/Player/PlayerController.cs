@@ -95,9 +95,6 @@ public class PlayerController : MonoBehaviour
         camCurXRot += mouseDelta.y * lookSensitivity;
         camCurXRot = Mathf.Clamp(camCurXRot, minXLook, maxXLook);
         cameraContainer.localEulerAngles = new Vector3(-camCurXRot, 0, 0);
-
-		    // 마우스 움직임의 변화량(mouseDelta)중 x(좌우)값에 민감도를 곱한다.
-		    // 카메라가 좌우로 회전하려면 rotation의 y 값에 넣어준다. -> 실습으로 확인
 		    // 좌우 회전은 플레이어(transform)를 회전시켜준다.
 		    // Why? 회전시킨 방향을 기준으로 앞뒤좌우 움직여야하니까.
         transform.eulerAngles += new Vector3(0, mouseDelta.x * lookSensitivity, 0);
