@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
 
     [HideInInspector]
     public bool canLook = true;
-
+    public Action inventory;
     private Rigidbody rigidbody;
 
     [Header("Jump")]
@@ -155,11 +155,20 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    //커서고정,해제
-    public void ToggleCursor(bool toggle)
+ public void OnInventory(InputAction.CallbackContext callbackContext)
     {
-        Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
-        canLook = !toggle;
+        if (callbackContext.phase == InputActionPhase.Started)
+        {
+            inventory?.Invoke();
+	          ToggleCursor();
+        }
+    }
+    //커서고정,해제
+    void ToggleCursor()
+    {
+        bool toggle = Cursor.lockState == CursorLockMode.Locked;
+				Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
+				canLook = !toggle;
     }
 
     void OnCollisionEnter(Collision collision)

@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// 상속을 통해 간단히 싱글톤 구현
+/// </summary>
+/// <typeparam name="T">Type 작성</typeparam>
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T _instance;
@@ -34,7 +38,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         else
         {
 
-            if(_instance == this)
+            if (_instance == this)
             {
                 DontDestroyOnLoad(gameObject);
             }
@@ -43,7 +47,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                 Destroy(gameObject);
             }
         }
-        
+
     }
 
 
