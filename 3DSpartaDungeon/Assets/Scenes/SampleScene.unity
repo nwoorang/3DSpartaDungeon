@@ -3421,7 +3421,7 @@ MonoBehaviour:
   slots: []
   inventoryWindow: {fileID: 1240234024}
   slotPanel: {fileID: 1322893954}
-  dropPosition: {fileID: 0}
+  dropPosition: {fileID: 1546797740}
   selectedItemName: {fileID: 2093928492}
   selectedItemDescription: {fileID: 204482982}
   selectedItemStatName: {fileID: 1446907355}
@@ -4635,7 +4635,7 @@ Transform:
   m_GameObject: {fileID: 1546797739}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5230,7 +5230,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1819522852}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1240234029}
+        m_TargetAssemblyTypeName: UIInventory, Assembly-CSharp
+        m_MethodName: OnDropButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1819522852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5925,7 +5937,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2095347413}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1240234029}
+        m_TargetAssemblyTypeName: UIInventory, Assembly-CSharp
+        m_MethodName: OnUseButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2095347413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6055,10 +6079,6 @@ PrefabInstance:
     - target: {fileID: 3166268662377347181, guid: b471ad5e8d8d83b4abc74a823ef1c3d5, type: 3}
       propertyPath: m_Name
       value: ImageSlot
-      objectReference: {fileID: 0}
-    - target: {fileID: 8473427926637287456, guid: b471ad5e8d8d83b4abc74a823ef1c3d5, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.91000366
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
