@@ -30,10 +30,10 @@ public class ItemData : ScriptableObject
     public Sprite icon;
     public GameObject dropPrefab;
 
-    [Header("Stacking")]
+    [Header("Stacking")] //중복갯수
     public bool canStack;
     public int maxStackAmount;
 
-    [Header("Consumable")]
+    [Header("Consumable")] //소비가능한지(소비타입)
     public ItemDataConsumable[] consumables;
 }

@@ -49,7 +49,7 @@ private void OnEnable()
         quatityText.text = string.Empty;
     }
 
-    // 슬롯을 클릭했을 때 발생하는 함수.
+    // 슬롯을 클릭했을 때 발생하는 버튼 외부 이벤트
     public void OnClickButton()
     {
         // 인벤토리의 SelectItem 호출, 현재 슬롯의 인덱스만 전달.

@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>(); //해당 스크립트를 가진 오브젝트의 컴포넌트 가져오기
+        
     }
 
     void Start()
