@@ -1,6 +1,9 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// 플레이어에 각 기능을 부착
+/// </summary>
 public class Player : MonoBehaviour
 {
     public PlayerController controller;

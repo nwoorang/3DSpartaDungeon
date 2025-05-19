@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
-
-// Condition 개별 바는 같은 로직을 공유
-// 코드 재활용을 위해 개별 스크립트로 작업
+/// <summary>
+/// 상태 UI_SlideBar에 대한 스크립트
+/// </summary>
 public class Condition : MonoBehaviour
 {
     public float curValue;
@@ -23,16 +23,17 @@ public class Condition : MonoBehaviour
 
     public void Add(float amount)
     {
-		    // 둘 중의 작은 값 (ex. maxValue보다 커지면 maxValue)
+        // maxValue까지 제한
         curValue = Mathf.Min(curValue + amount, maxValue);
     }
 
     public void Subtract(float amount)
     {
-				// 둘 중의 큰 값 (ex. 0보다 작아지면 0)
+        // minValue(0.0f)까지 제한
         curValue = Mathf.Max(curValue - amount, 0.0f);
     }
 
+    //FillBar채우기 위한 퍼센테이지
     public float GetPercentage()
     {
         return curValue / maxValue;
