@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
     private Player player;
         Vector3 test;
     public LayerMask moveObstacleLayer;
-private Vector3 platformDeltaMove = Vector3.zero;//
+
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>(); //해당 스크립트를 가진 오브젝트의 컴포넌트 가져오기
@@ -53,16 +53,11 @@ private Vector3 platformDeltaMove = Vector3.zero;//
     // 물리 연산
     private void FixedUpdate()//
     {
-  platformDeltaMove = Vector3.zero;
 
     if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 0.2f, moveObstacleLayer))
     {
-        OBJTargetChase platform = hit.collider.GetComponent<OBJTargetChase>();
-        if (platform != null)
-        {
-            platformDeltaMove = platform.deltaMove;
-            
-        }
+            Debug.Log("충돌함!");
+            test = hit.collider.GetComponent<Rigidbody>().velocity;
     }
 
     Move();
@@ -129,7 +124,7 @@ private Vector3 platformDeltaMove = Vector3.zero;//
         dir *= moveSpeed;  // 방향에 속력을 곱해준다.
         dir.y = rigidbody.velocity.y;  // y값은 velocity(변화량)의 y 값을 넣어준다.
 
-            rigidbody.velocity = dir + platformDeltaMove / Time.fixedDeltaTime;  // 연산된 속도를 velocity(변화량)에 넣어준다.
+            rigidbody.velocity = dir+test;  // 연산된 속도를 velocity(변화량)에 넣어준다.
     }
 
     void CameraLook()

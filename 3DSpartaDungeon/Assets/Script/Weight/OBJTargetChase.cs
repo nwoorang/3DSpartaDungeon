@@ -12,24 +12,21 @@ public class OBJTargetChase : MonoBehaviour
     public LayerMask layerMask;         //상호작용하고싶은 레이어 인스펙터에서 선택
 
     [Header("JumpObstacle")]
-    RaycastHit hit;
+
     private Rigidbody rb;
 
 
-    public Vector3 lastPosition;
-    public Vector3 deltaMove;//
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         direction = (target.transform.position - transform.position).normalized;//
-        lastPosition = transform.position;//
+        transform.LookAt(target.transform.position);
     }
 
     void FixedUpdate()
     {
-        transform.position += direction * velocity;
-        deltaMove = transform.position - lastPosition;//
-        lastPosition = transform.position;//
+        // rb.MovePosition(rb.position + direction * velocity * Time.fixedDeltaTime);
+               rb.velocity = direction*velocity;
     }
     void OnCollisionEnter(Collision collision)
     {
