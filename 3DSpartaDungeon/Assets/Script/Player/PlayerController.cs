@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("caching")]
     private Player player;
-        Vector3 test;
+        Vector3 MovePlatform;
     public LayerMask moveObstacleLayer;
 
     private void Awake()
@@ -54,10 +54,14 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()//
     {
 
-    if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 0.2f, moveObstacleLayer))
-    {
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 0.2f, moveObstacleLayer))
+        {
             Debug.Log("충돌함!");
-            test = hit.collider.GetComponent<Rigidbody>().velocity;
+            MovePlatform = hit.collider.GetComponent<Rigidbody>().velocity;
+        }
+        else
+        {
+            MovePlatform =Vector3.zero;
     }
 
     Move();
@@ -124,7 +128,7 @@ public class PlayerController : MonoBehaviour
         dir *= moveSpeed;  // 방향에 속력을 곱해준다.
         dir.y = rigidbody.velocity.y;  // y값은 velocity(변화량)의 y 값을 넣어준다.
 
-            rigidbody.velocity = dir+test;  // 연산된 속도를 velocity(변화량)에 넣어준다.
+            rigidbody.velocity = dir+MovePlatform;  // 연산된 속도를 velocity(변화량)에 넣어준다.
     }
 
     void CameraLook()
