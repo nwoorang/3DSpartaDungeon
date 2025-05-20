@@ -6,8 +6,9 @@ using UnityEngine;
 /// </summary>
 public class Player : MonoBehaviour
 {
-    public PlayerController controller;
-    public PlayerCondition condition;
+    [Header("caching")]
+    public PlayerController P_controller;
+    public PlayerCondition P_condition;
 
     public ItemData itemData;
     public Action addItem;
@@ -16,7 +17,7 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         CharacterManager.Instance.Player = this;
-        controller = GetComponent<PlayerController>();
-        condition = GetComponent<PlayerCondition>();
+        P_controller = GetComponent<PlayerController>();
+        P_condition = GetComponent<PlayerCondition>();
     }
 }

@@ -32,21 +32,40 @@ public class PlayerController : MonoBehaviour
     public float maxSlopeAngle;
     bool canJump = true;
     public float JumpCoolTime;
+
+    [Header("caching")]
+    private Player player;
+        Vector3 test;
+    public LayerMask moveObstacleLayer;
+private Vector3 platformDeltaMove = Vector3.zero;//
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>(); //해당 스크립트를 가진 오브젝트의 컴포넌트 가져오기
-        
+
     }
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;//커서 중앙고정및 Hide
+        player = CharacterManager.Instance.Player;//캐싱
     }
 
     // 물리 연산
-    private void FixedUpdate()
+    private void FixedUpdate()//
     {
-        Move();
+  platformDeltaMove = Vector3.zero;
+
+    if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 0.2f, moveObstacleLayer))
+    {
+        OBJTargetChase platform = hit.collider.GetComponent<OBJTargetChase>();
+        if (platform != null)
+        {
+            platformDeltaMove = platform.deltaMove;
+            
+        }
+    }
+
+    Move();
     }
 
     // 카메라 연산 -> 모든 연산이 끝나고 카메라 움직임
@@ -80,17 +99,21 @@ public class PlayerController : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Started && IsGrounded() && canJump)
+        if (player.P_condition.uiCondition.stamina.curValue >= 20)
         {
-            rigidbody.AddForce(Vector2.up * jumpPower, ForceMode.Impulse);
-            StartCoroutine(JumpCooldown());
+            if (context.phase == InputActionPhase.Started && IsGrounded() && canJump)
+            {
+                rigidbody.AddForce(Vector2.up * jumpPower, ForceMode.Impulse);
+                player.P_condition.StaminaMinus(20);
+                StartCoroutine(JumpCooldown());
+            }
         }
     }
 
     IEnumerator JumpCooldown()
     {
         canJump = false;
-        yield return new WaitForSeconds(JumpCoolTime);  // 0.2초간 점프 불가
+        yield return new WaitForSeconds(JumpCoolTime);  // JumpCoolTime동안 점프 불가
         canJump = true;
     }
 
@@ -106,18 +129,27 @@ public class PlayerController : MonoBehaviour
         dir *= moveSpeed;  // 방향에 속력을 곱해준다.
         dir.y = rigidbody.velocity.y;  // y값은 velocity(변화량)의 y 값을 넣어준다.
 
-        rigidbody.velocity = dir;  // 연산된 속도를 velocity(변화량)에 넣어준다.
+            rigidbody.velocity = dir + platformDeltaMove / Time.fixedDeltaTime;  // 연산된 속도를 velocity(변화량)에 넣어준다.
     }
 
     void CameraLook()
     {
-        // 마우스 움직임의 변화량(mouseDelta)중 y(위 아래)값에 민감도를 곱한다.
-        // 카메라가 위 아래로 회전하려면 rotation의 x 값에 넣어준다. -> 실습으로 확인
-        camCurXRot += mouseDelta.y * lookSensitivity;
+        // 마우스 입력으로 회전 각도 누적
+        camCurXRot -= mouseDelta.y * lookSensitivity;
         camCurXRot = Mathf.Clamp(camCurXRot, minXLook, maxXLook);
-        cameraContainer.localEulerAngles = new Vector3(-camCurXRot, 0, 0);
-        // 좌우 회전은 플레이어(transform)를 회전시켜준다.
-        // 회전 방향으로 움직여야함
+        float yaw = transform.eulerAngles.y + mouseDelta.x * lookSensitivity;
+
+        // 쿼터니언 회전값 계산
+        Quaternion rotation = Quaternion.Euler(camCurXRot, yaw, 0);
+
+        // 카메라 거리 설정
+        float cameraDistance = 1f;
+        Vector3 cameraOffset = rotation * new Vector3(0, 0, -cameraDistance);
+
+        // 회전값을 적용한 카메라의 위치,플레이어쪽으로 방향 돌리기
+        cameraContainer.position = transform.position + cameraOffset;
+        cameraContainer.LookAt(transform.position);
+        //플레이어가 카메라따라 y축 회전
         transform.eulerAngles += new Vector3(0, mouseDelta.x * lookSensitivity, 0);
     }
 
@@ -135,10 +167,10 @@ public class PlayerController : MonoBehaviour
         // 4개의 Ray 중 groundLayerMask에 해당하는 오브젝트가 충돌했는지 조회한다.
         for (int i = 0; i < rays.Length; i++)
         {
-            if (Physics.Raycast(rays[i], 2f, groundLayerMask))
+            if (Physics.Raycast(rays[i], 0.2f, groundLayerMask))
             {
                 RaycastHit hit;
-                if (Physics.Raycast(rays[i], out hit, 2f))
+                if (Physics.Raycast(rays[i], out hit, 0.2f))
                 {
                     float slopeAngle = Vector3.Angle(hit.normal, Vector3.up);
                     if (slopeAngle < maxSlopeAngle)
@@ -156,20 +188,20 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
- public void OnInventory(InputAction.CallbackContext callbackContext)
+    public void OnInventory(InputAction.CallbackContext callbackContext)
     {
         if (callbackContext.phase == InputActionPhase.Started)
         {
             inventory?.Invoke();
-	          ToggleCursor();
+            ToggleCursor();
         }
     }
     //커서고정,해제
     void ToggleCursor()
     {
         bool toggle = Cursor.lockState == CursorLockMode.Locked;
-				Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
-				canLook = !toggle;
+        Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
+        canLook = !toggle;
     }
 
     void OnCollisionEnter(Collision collision)
@@ -178,5 +210,6 @@ public class PlayerController : MonoBehaviour
         {
             rigidbody.AddForce(Vector2.up * 600, ForceMode.Impulse);
         }
+
     }
 }

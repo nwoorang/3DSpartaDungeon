@@ -31,18 +31,22 @@ public class PlayerCondition : MonoBehaviour
         }
     }
 
-    public void Heal(float amount)
+    public void Heal(float amount) //HP회복
     {
         health.Add(amount);
     }
 
-    public void Eat(float amount)
+    public void Eat(float amount) //배고픔 회복
     {
         hunger.Add(amount);
     }
 
+    public void StaminaMinus(float amount)
+    {
+        stamina.Subtract(amount);
+    }
     public void Die()
     {
-     //   Debug.Log("플레이어가 죽었다.");
+        //   Debug.Log("플레이어가 죽었다.");
     }
 }
