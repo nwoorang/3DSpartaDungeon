@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,7 +12,7 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     public float moveSpeed;
     private Vector2 curMovementInput;  // 현재 입력 값
-    public float jumpPower;
+    public float jumpPower;//기본 점프파워
     public LayerMask groundLayerMask;  // 레이어 정보
 
     [Header("Look")]
@@ -33,10 +34,20 @@ public class PlayerController : MonoBehaviour
     bool canJump = true;
     public float JumpCoolTime;
 
+    [Header("JumpHold")]
+    public float jumpHoldPower;
+
     [Header("caching")]
     private Player player;
-        Vector3 MovePlatform;
+
+    [Header("MovePlatform")]
     public LayerMask moveObstacleLayer;
+    Vector3 MovePlatform;
+
+
+    [Header("ThrowUp")]
+    public float ThrowUpPower;
+    private bool isThrowUp = false;
 
     private void Awake()
     {
@@ -51,20 +62,19 @@ public class PlayerController : MonoBehaviour
     }
 
     // 물리 연산
-    private void FixedUpdate()//
+    private void FixedUpdate()//MovePlatform위에 있을때 같이 이동
     {
 
         if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 0.2f, moveObstacleLayer))
         {
-            Debug.Log("충돌함!");
             MovePlatform = hit.collider.GetComponent<Rigidbody>().velocity;
         }
         else
         {
-            MovePlatform =Vector3.zero;
-    }
+            MovePlatform = Vector3.zero;
+        }
 
-    Move();
+        Move();
     }
 
     // 카메라 연산 -> 모든 연산이 끝나고 카메라 움직임
@@ -98,7 +108,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (player.P_condition.uiCondition.stamina.curValue >= 20)
+        if (player.P_condition.uiCondition.stamina.curValue >= 20) //스테미나 제한에 따른 점프
         {
             if (context.phase == InputActionPhase.Started && IsGrounded() && canJump)
             {
@@ -128,7 +138,7 @@ public class PlayerController : MonoBehaviour
         dir *= moveSpeed;  // 방향에 속력을 곱해준다.
         dir.y = rigidbody.velocity.y;  // y값은 velocity(변화량)의 y 값을 넣어준다.
 
-            rigidbody.velocity = dir+MovePlatform;  // 연산된 속도를 velocity(변화량)에 넣어준다.
+        rigidbody.velocity = dir + MovePlatform;  // 연산된 속도+MovePlatform(위에 탑승했을 경우)를 velocity(변화량)에 넣어준다.
     }
 
     void CameraLook()
@@ -169,7 +179,7 @@ public class PlayerController : MonoBehaviour
             if (Physics.Raycast(rays[i], 0.2f, groundLayerMask))
             {
                 RaycastHit hit;
-                if (Physics.Raycast(rays[i], out hit, 0.2f))
+                if (Physics.Raycast(rays[i], out hit, 0.2f)) //경사각 제한
                 {
                     float slopeAngle = Vector3.Angle(hit.normal, Vector3.up);
                     if (slopeAngle < maxSlopeAngle)
@@ -205,10 +215,36 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("JumpHold"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("JumpHold"))//jumpHold오브젝트를 밟으면 위로 날림
         {
-            rigidbody.AddForce(Vector2.up * 600, ForceMode.Impulse);
+            Debug.Log("그냥 점프대 호출");
+            rigidbody.AddForce(Vector2.up * jumpHoldPower, ForceMode.Impulse);
         }
+    }
 
+    void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("ThrowUp") && isThrowUp)//jumpHold오브젝트를 밟으면 위로 날림
+        {
+            Debug.Log("키 입력 점프대 호출");
+            rigidbody.AddForce(Vector2.up * ThrowUpPower, ForceMode.Impulse);
+            isThrowUp = false;
+        }
+       // StartCoroutine("ThrowUpCorutine");
+    }
+    public void IsThrowUp(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started&& IsGrounded())
+        {
+            Debug.Log("ISThrowUp호출");
+            isThrowUp = true;
+        }
+    }
+
+    IEnumerator ThrowUpCorutine()//잠시 보류 일정시간 머무르면 점프
+    {
+                    isThrowUp = false;
+        yield return new WaitForSeconds(2f);
+                    isThrowUp = true;
     }
 }

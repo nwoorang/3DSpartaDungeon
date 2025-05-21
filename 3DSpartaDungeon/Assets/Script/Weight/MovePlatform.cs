@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OBJTargetChase : MonoBehaviour
+public class MovePlatform : MonoBehaviour
 {
 
     public GameObject target;
@@ -30,9 +30,8 @@ public class OBJTargetChase : MonoBehaviour
     }
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("TriggerObstacle")) //여러 레이어마스크는 이런식으로 비트계산해줘야함
+        if (collision.gameObject.layer == LayerMask.NameToLayer("TriggerObstacle"))//외곽 충돌시 사라지게 함
         {
-            Debug.Log("충돌");
             Destroy(gameObject);
         }
     }
