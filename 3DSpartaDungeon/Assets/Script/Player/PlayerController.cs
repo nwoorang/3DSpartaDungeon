@@ -230,7 +230,7 @@ public class PlayerController : MonoBehaviour
             rigidbody.AddForce(Vector2.up * ThrowUpPower, ForceMode.Impulse);
             isThrowUp = false;
         }
-       // StartCoroutine("ThrowUpCorutine");
+       // StartCoroutine("ThrowUpCorutine",2f);
     }
     public void IsThrowUp(InputAction.CallbackContext context)
     {

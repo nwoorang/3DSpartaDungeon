@@ -5,9 +5,9 @@ using UnityEngine;
 public class MovePlatform : MonoBehaviour
 {
 
-    public GameObject target;
-    public float velocity;
-    Vector3 direction;
+    public GameObject Target;
+    public float Velocity;
+    Vector3 Direction;
 
     public LayerMask layerMask;         //상호작용하고싶은 레이어 인스펙터에서 선택
 
@@ -19,14 +19,24 @@ public class MovePlatform : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        direction = (target.transform.position - transform.position).normalized;//
-        transform.LookAt(target.transform.position);
+                        Direction = (Target.transform.position - transform.position).normalized;
+        transform.LookAt(Target.transform.position);
     }
+
+    public void InitSet(GameObject target, Vector3 pos, float velocity)
+    {
+        Target = target;
+        transform.position = pos;
+        Velocity = velocity;
+                        Direction = (Target.transform.position - transform.position).normalized;
+        transform.LookAt(Target.transform.position);
+    }
+
 
     void FixedUpdate()
     {
         // rb.MovePosition(rb.position + direction * velocity * Time.fixedDeltaTime);
-               rb.velocity = direction*velocity;
+               rb.velocity = Direction*Velocity;
     }
     void OnCollisionEnter(Collision collision)
     {
@@ -34,5 +44,10 @@ public class MovePlatform : MonoBehaviour
         {
             Destroy(gameObject);
         }
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))//jumpHold오브젝트를 밟으면 위로 날림
+        {
+            collision.rigidbody.AddForce(Direction*Velocity, ForceMode.Impulse);
+        }
+
     }
 }
