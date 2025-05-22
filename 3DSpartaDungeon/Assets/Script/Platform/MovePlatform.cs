@@ -14,7 +14,7 @@ public class MovePlatform : MonoBehaviour
     [Header("JumpObstacle")]
 
     private Rigidbody rb;
-
+    public string SerialName;
 
     void Start()
     {
@@ -42,7 +42,7 @@ public class MovePlatform : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("TriggerObstacle"))//외곽 충돌시 사라지게 함
         {
-            Destroy(gameObject);
+            PlatformObjectPool.Instance.Release(SerialName,gameObject);
         }
             if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))//jumpHold오브젝트를 밟으면 위로 날림
         {

@@ -217,7 +217,6 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("JumpHold"))//jumpHold오브젝트를 밟으면 위로 날림
         {
-            Debug.Log("그냥 점프대 호출");
             rigidbody.AddForce(Vector2.up * jumpHoldPower, ForceMode.Impulse);
         }
     }
@@ -226,7 +225,6 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("ThrowUp") && isThrowUp)//jumpHold오브젝트를 밟으면 위로 날림
         {
-            Debug.Log("키 입력 점프대 호출");
             rigidbody.AddForce(Vector2.up * ThrowUpPower, ForceMode.Impulse);
             isThrowUp = false;
         }

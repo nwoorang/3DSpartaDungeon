@@ -125,6 +125,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 0
+  SerialName: Rock10
 --- !u!54 &-7359677292482728349
 Rigidbody:
   m_ObjectHideFlags: 0
