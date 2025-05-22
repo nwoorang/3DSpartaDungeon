@@ -4,15 +4,7 @@ using UnityEngine;
 
 public class Stage : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //난이도를 만들거임 
+    //필요재료-발판맵,스포너,시간,시간ui,클리어ui,
+    //1
 }

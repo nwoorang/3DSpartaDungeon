@@ -10,10 +10,11 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
-    public float moveSpeed;
-    private Vector2 curMovementInput;  // 현재 입력 값
-    public float jumpPower;//기본 점프파워
-    public LayerMask groundLayerMask;  // 레이어 정보
+        public LayerMask groundLayerMask;  // 레이어 정보
+            private Vector2 curMovementInput;  // 현재 입력 값
+    public float moveSpeed { get; set; }//이동속도
+
+    public float jumpPower { get; set; }//기본 점프파워
 
     [Header("Look")]
     public Transform cameraContainer;
@@ -37,9 +38,6 @@ public class PlayerController : MonoBehaviour
     [Header("JumpHold")]
     public float jumpHoldPower;
 
-    [Header("caching")]
-    private Player player;
-
     [Header("MovePlatform")]
     public LayerMask moveObstacleLayer;
     Vector3 MovePlatform;
@@ -48,6 +46,9 @@ public class PlayerController : MonoBehaviour
     [Header("ThrowUp")]
     public float ThrowUpPower;
     private bool isThrowUp = false;
+
+    [Header("caching")]
+    private Player player;
 
     private void Awake()
     {
@@ -59,6 +60,8 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;//커서 중앙고정및 Hide
         player = CharacterManager.Instance.Player;//캐싱
+        jumpPower = player.P_stat.GetStatus().jumpPower;
+        moveSpeed = player.P_stat.GetStatus().moveSpeed;
     }
 
     // 물리 연산
@@ -228,11 +231,11 @@ public class PlayerController : MonoBehaviour
             rigidbody.AddForce(Vector2.up * ThrowUpPower, ForceMode.Impulse);
             isThrowUp = false;
         }
-       // StartCoroutine("ThrowUpCorutine",2f);
+        // StartCoroutine("ThrowUpCorutine",2f);
     }
     public void IsThrowUp(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Started&& IsGrounded())
+        if (context.phase == InputActionPhase.Started && IsGrounded())
         {
             Debug.Log("ISThrowUp호출");
             isThrowUp = true;
@@ -241,8 +244,8 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator ThrowUpCorutine()//잠시 보류 일정시간 머무르면 점프
     {
-                    isThrowUp = false;
+        isThrowUp = false;
         yield return new WaitForSeconds(2f);
-                    isThrowUp = true;
+        isThrowUp = true;
     }
 }

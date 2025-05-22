@@ -5,9 +5,9 @@ using UnityEngine.UI;
 /// </summary>
 public class Condition : MonoBehaviour
 {
-    public float curValue;
+    public float curValue { get; set; }
     public float maxValue;
-    public float startValue;
+    public float startValue { get; set; }
     public float passiveValue;
     public Image uiBar;
 

@@ -6,6 +6,7 @@ public class MovePlatform : MonoBehaviour
 {
 
     public GameObject Target;
+    public float originVelocity;
     public float Velocity;
     Vector3 Direction;
 
@@ -15,11 +16,12 @@ public class MovePlatform : MonoBehaviour
 
     private Rigidbody rb;
     public string SerialName;
+    public float lifetime;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-                        Direction = (Target.transform.position - transform.position).normalized;
+        Direction = (Target.transform.position - transform.position).normalized;
         transform.LookAt(Target.transform.position);
     }
 
@@ -28,25 +30,34 @@ public class MovePlatform : MonoBehaviour
         Target = target;
         transform.position = pos;
         Velocity = velocity;
-                        Direction = (Target.transform.position - transform.position).normalized;
+        Direction = (Target.transform.position - transform.position).normalized;
         transform.LookAt(Target.transform.position);
     }
 
+    void OnEnable()
+    {
+        StartCoroutine("LifeTime");
+    }
 
+    IEnumerator LifeTime()
+    {
+        yield return new WaitForSeconds(lifetime);
+        PlatformObjectPool.Instance.Release(SerialName, gameObject);
+    }
     void FixedUpdate()
     {
         // rb.MovePosition(rb.position + direction * velocity * Time.fixedDeltaTime);
-               rb.velocity = Direction*Velocity;
+        rb.velocity = Direction * Velocity*originVelocity;
     }
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("TriggerObstacle"))//외곽 충돌시 사라지게 함
         {
-            PlatformObjectPool.Instance.Release(SerialName,gameObject);
+            PlatformObjectPool.Instance.Release(SerialName, gameObject);
         }
-            if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))//jumpHold오브젝트를 밟으면 위로 날림
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))//jumpHold오브젝트를 밟으면 위로 날림
         {
-            collision.rigidbody.AddForce(Direction*Velocity, ForceMode.Impulse);
+            collision.rigidbody.AddForce(Direction * Velocity*originVelocity, ForceMode.Impulse);
         }
 
     }

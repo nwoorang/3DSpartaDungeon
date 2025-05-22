@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
+[System.Serializable] //클래스,구조체 직렬화
 public class PlayerStatus
 {
     public float hp;
@@ -16,6 +16,11 @@ public class PlayerStatus
 
 public class Stat : MonoBehaviour
 {
-    [SerializeField]
+    [SerializeField] //클래스내 변수 직렬화
     private PlayerStatus status;
+
+    public PlayerStatus GetStatus()
+    {
+        return status;
+    }
 }

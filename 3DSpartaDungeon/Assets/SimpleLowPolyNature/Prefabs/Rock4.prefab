@@ -121,11 +121,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Target: {fileID: 0}
+  originVelocity: 6
   Velocity: 0
   layerMask:
     serializedVersion: 2
     m_Bits: 0
   SerialName: Rock4
+  lifetime: 5
 --- !u!54 &-757848134549894645
 Rigidbody:
   m_ObjectHideFlags: 0

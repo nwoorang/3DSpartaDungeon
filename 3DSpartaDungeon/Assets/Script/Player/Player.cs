@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public PlayerController P_controller;
     public PlayerCondition P_condition;
 
+    public Stat P_stat;
     public ItemData itemData;
     public Action addItem;
     public Transform dropPosition;
@@ -19,5 +20,6 @@ public class Player : MonoBehaviour
         CharacterManager.Instance.Player = this;
         P_controller = GetComponent<PlayerController>();
         P_condition = GetComponent<PlayerCondition>();
+        P_stat = GetComponent<Stat>();
     }
 }

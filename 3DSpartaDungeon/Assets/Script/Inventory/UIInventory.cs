@@ -29,15 +29,18 @@ public class UIInventory : MonoBehaviour
     private PlayerController controller;
     private PlayerCondition condition;
 
+    private Player player;
+
     void Start()
     {
-        controller = CharacterManager.Instance.Player.P_controller;
-        condition = CharacterManager.Instance.Player.P_condition;
-        dropPosition = CharacterManager.Instance.Player.dropPosition;
-
+        player = CharacterManager.Instance.Player;
+        controller = player.P_controller;
+        condition = player.P_condition;
+        dropPosition = player.dropPosition;
+        
         // Action 호출 시 필요한 함수 등록
         controller.inventory += Toggle;      // inventory 키 입력 시
-        CharacterManager.Instance.Player.addItem += AddItem;  // 아이템 파밍 시
+        player.addItem += AddItem;  // 아이템 파밍 시
 
         // Inventory UI 초기화 로직들
         inventoryWindow.SetActive(false);
@@ -215,6 +218,8 @@ public class UIInventory : MonoBehaviour
                         condition.Heal(selectedItem.item.consumables[i].value); break;
                     case ConsumableType.Hunger:
                         condition.Eat(selectedItem.item.consumables[i].value); break;
+                                            case ConsumableType.Speed:
+                        condition.SpeedUp(selectedItem.item.consumables[i].value); break;
                 }
             }
             RemoveSelctedItem();
