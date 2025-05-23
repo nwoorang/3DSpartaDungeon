@@ -4,7 +4,7 @@
 ![Image](https://github.com/user-attachments/assets/0508491c-1ad3-43d8-8e50-04c55fcf5eee)
 
 
-# 🎯 Archer Survival 
+# 🎯 3D Sparta Dungeon
 > 내일배움캠프 7주차 12조(왜시비조) 개인 프로젝트입니다.
 
 ---
