@@ -22,6 +22,7 @@ public class Interaction : MonoBehaviour
     public TextMeshProUGUI promptText; //출력메시지
     private Camera Cam;
 
+    public GameObject DesciptionUI;
     void Start()
     {
         Cam = Camera.main;
@@ -39,33 +40,35 @@ public class Interaction : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, maxCheckDistance, layerMask))
             {
-                    int hitLayer = hit.collider.gameObject.layer;
-                if (hitLayer  == LayerMask.NameToLayer("Interactable"))
+                int hitLayer = hit.collider.gameObject.layer;
+                if (hitLayer == LayerMask.NameToLayer("Interactable"))
                 {
                     if (hit.collider.gameObject != curInteractGameObject) //중복을 방지하기 위해 탐색한게 같은 오브젝트면 패스
                     {
-                                                Debug.Log("curInteractGameObject맞음");
+                        Debug.Log("curInteractGameObject맞음");
                         curInteractGameObject = hit.collider.gameObject;
                         curInteractable = hit.collider.GetComponent<IInteractable>();
                         SetPromptText();
                     }
                 }
-               else if (hitLayer  == LayerMask.NameToLayer("UI"))
+                else if (hitLayer == LayerMask.NameToLayer("UI"))
                 {
                     if (hit.collider.gameObject == StartUI)//콜라이더 계속 호출하는 문제 해결해야함
                     {
                         isUI = true;
+                        DesciptionUI.SetActive(true);
                     }
                 }
             }
-                else
-                {
-                    curInteractGameObject = null;
-                    curInteractable = null;
-                    promptText.gameObject.SetActive(false);
+            else
+            {
+                curInteractGameObject = null;
+                curInteractable = null;
+                promptText.gameObject.SetActive(false);
 
-                    isUI = false;
-                }
+                isUI = false;
+                DesciptionUI.SetActive(false);
+            }
         }
     }
 
@@ -86,7 +89,7 @@ public class Interaction : MonoBehaviour
         }
     }
 
-        public void StartStage(InputAction.CallbackContext callbackContext)//F키 누르면 UI 상호작용
+    public void StartStage(InputAction.CallbackContext callbackContext)//F키 누르면 UI 상호작용
     {
         if (callbackContext.phase == InputActionPhase.Started && isUI)
         {

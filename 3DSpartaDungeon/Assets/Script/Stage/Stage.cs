@@ -41,8 +41,12 @@ public class Stage : MonoBehaviour
 
     public GameObject Canon;
     public GameObject StartUI;
+      public AudioSource bgmSource;     // 배경음 오디오소스
+    public GameObject FirstGuideDescription;
     private IEnumerator StageRoutine()
     {
+        FirstGuideDescription.SetActive(false);
+        bgmSource.Play();
         isTimerRunning = true;
         TitleText.text = "Survival Time:";
         spawner.SetActive(true);
@@ -66,7 +70,7 @@ public class Stage : MonoBehaviour
         spawner.SetActive(false);
         clearUI.SetActive(true);
         Canon.SetActive(true);
-
+        bgmSource.Stop();
     }
 
     public void StageUp()
