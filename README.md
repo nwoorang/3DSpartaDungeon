@@ -1,7 +1,8 @@
 # 3DSpartaDungeon
 3D 숙련 개인프로젝트 스파르타 던전 3D캐릭터로 이동및 점프를 하며 장애물과 상호작용을한다.
 
-![Image](https://github.com/user-attachments/assets/4ef78ad2-45fe-47d4-ac29-d397b8d19f35)
+![Image](https://github.com/user-attachments/assets/0508491c-1ad3-43d8-8e50-04c55fcf5eee)
+
 
 # 🎯 Archer Survival 
 > 내일배움캠프 7주차 12조(왜시비조) 개인 프로젝트입니다.
@@ -22,3 +23,6 @@
 - 아이템 드랍(스피드포션,HP포션)
 - 점프대,움직이는 플랫폼(addforce)  
 등의 핵심 기능을 팀 단위로 구현한 프로젝트입니다.
+
+## 와이어 프레임(플레이어 핵심 구조)
+![Image](https://github.com/user-attachments/assets/1617ecab-248c-4165-b3e3-298fc9d84c73)
