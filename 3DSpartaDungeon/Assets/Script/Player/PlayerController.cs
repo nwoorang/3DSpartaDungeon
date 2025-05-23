@@ -10,8 +10,8 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
-        public LayerMask groundLayerMask;  // 레이어 정보
-            private Vector2 curMovementInput;  // 현재 입력 값
+    public LayerMask groundLayerMask;  // 레이어 정보
+    private Vector2 curMovementInput;  // 현재 입력 값
     public float moveSpeed { get; set; }//이동속도
 
     public float jumpPower { get; set; }//기본 점프파워
@@ -50,6 +50,8 @@ public class PlayerController : MonoBehaviour
     [Header("caching")]
     private Player player;
 
+
+    private Stage stage;
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>(); //해당 스크립트를 가진 오브젝트의 컴포넌트 가져오기
@@ -62,6 +64,7 @@ public class PlayerController : MonoBehaviour
         player = CharacterManager.Instance.Player;//캐싱
         jumpPower = player.P_stat.GetStatus().jumpPower;
         moveSpeed = player.P_stat.GetStatus().moveSpeed;
+        stage = player.P_stage;
     }
 
     // 물리 연산
@@ -247,5 +250,10 @@ public class PlayerController : MonoBehaviour
         isThrowUp = false;
         yield return new WaitForSeconds(2f);
         isThrowUp = true;
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        stage.StageUp();
     }
 }

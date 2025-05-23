@@ -52,7 +52,14 @@ public class PlatformObjectPool : Singleton<PlatformObjectPool>
     private IEnumerator ReleaseAfterDelay(string prefabName, GameObject obj, float delay)
     {
         yield return new WaitForSeconds(delay);
+                try
+        {
         Release(prefabName, obj);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("코루틴 예외 발생: " + e);
+        }
     }
 
 

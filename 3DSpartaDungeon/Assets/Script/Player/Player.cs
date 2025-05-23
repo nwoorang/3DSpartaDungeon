@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public PlayerCondition P_condition;
 
     public Stat P_stat;
+        public Stage P_stage;
     public ItemData itemData;
     public Action addItem;
     public Transform dropPosition;
@@ -21,5 +22,6 @@ public class Player : MonoBehaviour
         P_controller = GetComponent<PlayerController>();
         P_condition = GetComponent<PlayerCondition>();
         P_stat = GetComponent<Stat>();
+        
     }
 }

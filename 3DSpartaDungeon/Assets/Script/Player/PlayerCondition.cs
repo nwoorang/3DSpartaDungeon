@@ -26,7 +26,7 @@ public class PlayerCondition : MonoBehaviour
         hunger.curValue = player.P_stat.GetStatus().hunger;
         stamina.curValue = player.P_stat.GetStatus().stamina;
         playerController = player.P_controller;
-                        
+
     }
     private void Update()
     {
@@ -68,7 +68,14 @@ public class PlayerCondition : MonoBehaviour
     IEnumerator SpeedUpTimeEnd(float amount)
     {
         yield return new WaitForSeconds(5f);
-               playerController.moveSpeed -= amount; 
+        try
+        {
+            playerController.moveSpeed -= amount;
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("코루틴 예외 발생: " + e);
+        }
     }
     public void Die()
     {

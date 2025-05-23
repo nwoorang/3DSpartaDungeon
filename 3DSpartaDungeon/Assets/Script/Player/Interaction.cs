@@ -13,6 +13,10 @@ public class Interaction : MonoBehaviour
     public LayerMask layerMask;         //상호작용하고싶은 레이어 인스펙터에서 선택
 
     public GameObject curInteractGameObject;  // 현재 상호작용 게임오브젝트
+    public GameObject StartUI;
+    private bool isUI;
+
+    public Stage stage;
     private IInteractable curInteractable;    //ItemObject <- IInteractable 인터페이스
 
     public TextMeshProUGUI promptText; //출력메시지
@@ -35,19 +39,33 @@ public class Interaction : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, maxCheckDistance, layerMask))
             {
-                if (hit.collider.gameObject != curInteractGameObject)
+                    int hitLayer = hit.collider.gameObject.layer;
+                if (hitLayer  == LayerMask.NameToLayer("Interactable"))
                 {
-                    curInteractGameObject = hit.collider.gameObject;
-                    curInteractable = hit.collider.GetComponent<IInteractable>();
-                    SetPromptText();
+                    if (hit.collider.gameObject != curInteractGameObject) //중복을 방지하기 위해 탐색한게 같은 오브젝트면 패스
+                    {
+                                                Debug.Log("curInteractGameObject맞음");
+                        curInteractGameObject = hit.collider.gameObject;
+                        curInteractable = hit.collider.GetComponent<IInteractable>();
+                        SetPromptText();
+                    }
+                }
+               else if (hitLayer  == LayerMask.NameToLayer("UI"))
+                {
+                    if (hit.collider.gameObject == StartUI)//콜라이더 계속 호출하는 문제 해결해야함
+                    {
+                        isUI = true;
+                    }
                 }
             }
-            else
-            {
-                curInteractGameObject = null;
-                curInteractable = null;
-                promptText.gameObject.SetActive(false);
-            }
+                else
+                {
+                    curInteractGameObject = null;
+                    curInteractable = null;
+                    promptText.gameObject.SetActive(false);
+
+                    isUI = false;
+                }
         }
     }
 
@@ -57,7 +75,7 @@ public class Interaction : MonoBehaviour
         promptText.text = curInteractable.GetInteractPrompt();
     }
 
-    public void OnInteractInput(InputAction.CallbackContext context)
+    public void OnInteractInput(InputAction.CallbackContext context) //E키 누르면 아이템 수집
     {
         if (context.phase == InputActionPhase.Started && curInteractable != null)
         {
@@ -65,6 +83,15 @@ public class Interaction : MonoBehaviour
             curInteractGameObject = null;
             curInteractable = null;
             promptText.gameObject.SetActive(false);
+        }
+    }
+
+        public void StartStage(InputAction.CallbackContext callbackContext)//F키 누르면 UI 상호작용
+    {
+        if (callbackContext.phase == InputActionPhase.Started && isUI)
+        {
+            stage.StartCoroutine("StageRoutine");
+            StartUI.SetActive(false);
         }
     }
 }

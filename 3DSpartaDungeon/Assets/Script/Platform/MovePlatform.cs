@@ -42,12 +42,19 @@ public class MovePlatform : MonoBehaviour
     IEnumerator LifeTime()
     {
         yield return new WaitForSeconds(lifetime);
-        PlatformObjectPool.Instance.Release(SerialName, gameObject);
+        try
+        {
+            PlatformObjectPool.Instance.Release(SerialName, gameObject);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("코루틴 예외 발생: " + e);
+        }
     }
     void FixedUpdate()
     {
         // rb.MovePosition(rb.position + direction * velocity * Time.fixedDeltaTime);
-        rb.velocity = Direction * Velocity*originVelocity;
+        rb.velocity = Direction * Velocity * originVelocity;
     }
     void OnCollisionEnter(Collision collision)
     {
@@ -57,7 +64,7 @@ public class MovePlatform : MonoBehaviour
         }
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))//jumpHold오브젝트를 밟으면 위로 날림
         {
-            collision.rigidbody.AddForce(Direction * Velocity*originVelocity, ForceMode.Impulse);
+            collision.rigidbody.AddForce(Direction * Velocity * originVelocity, ForceMode.Impulse);
         }
 
     }
