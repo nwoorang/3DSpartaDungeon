@@ -4,10 +4,15 @@
 ![Image](https://github.com/user-attachments/assets/0508491c-1ad3-43d8-8e50-04c55fcf5eee)
 
 ###조작키
+
 WASD-방향키
+
 SpaceBar-점프
+
 F-start버튼 클릭
+
 E-아이템 수집
+
 R-대포안에 들어간 뒤 누르면 발사
 
 
