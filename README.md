@@ -3,7 +3,7 @@
 
 ![Image](https://github.com/user-attachments/assets/0508491c-1ad3-43d8-8e50-04c55fcf5eee)
 
-###조작키
+### 조작키
 
 WASD-방향키
 
